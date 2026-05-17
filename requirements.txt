@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+joblib
+scikit-learn
+nltk
+numpy
+streamlit
+tensorflow==2.21.0
+protobuf>=6.31.1,<7
