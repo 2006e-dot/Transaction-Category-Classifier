@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Transaction Categorizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-6">
+        <div>
+            <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">🏦 AI Categorizer Engine</h1>
+            <p class="text-slate-400 text-sm mt-1">Standalone NLP model tester interface.</p>
+        </div>
+        <div class="space-y-2">
+            <label class="text-sm font-medium text-slate-300">Transaction Description</label>
+            <input type="text" id="txInput" placeholder="e.g., NETFLIX.COM PREMIUM" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500">
+        </div>
+        <button onclick="sendToAPI()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold py-3 rounded-xl shadow-lg cursor-pointer">Analyze Transaction</button>
+        <div id="resultBox" class="hidden bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+                    <p class="text-xs text-slate-400">Category</p>
+                    <p id="resCategory" class="text-base font-bold text-emerald-400 mt-1">-</p>
+                </div>
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+                    <p class="text-xs text-slate-400">Confidence</p>
+                    <p id="resConfidence" class="text-base font-bold text-teal-400 mt-1">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function sendToAPI() {
+            const inputVal = document.getElementById('txInput').value;
+            if (!inputVal) return alert('Please enter something!');
+            try {
+                const response = await fetch('http://127.0.0.1:8000/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ description: inputVal })
+                });
+                const data = await response.json();
+                if(data.success) {
+                    document.getElementById('resCategory').innerText = data.predicted_category_name;
+                    document.getElementById('resConfidence').innerText = data.confidence_score + '%';
+                    document.getElementById('resultBox').classList.remove('hidden');
+                }
+            } catch (error) {
+                alert('API se connect nahi ho paya!');
+            }
+        }
+    </script>
+</body>
+</html>
