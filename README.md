@@ -2,7 +2,7 @@
 
 An NLP + Deep Learning based web application that predicts transaction categories from financial transaction descriptions.
 
-Built using TensorFlow/Keras for model training and FastAPI for backend deployment.
+Built using Logistic Regression for model training and FastAPI for backend deployment. Tried implementing ANN on a small batch of data.
 
 ---
 
